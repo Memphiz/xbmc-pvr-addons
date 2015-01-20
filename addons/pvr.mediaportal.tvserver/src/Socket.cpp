@@ -176,7 +176,7 @@ bool Socket::listen() const
     return false;
   }
 
-  int listen_return = listen (_sd, SOMAXCONN);
+  int listen_return = ::MPTV::listen (_sd, SOMAXCONN);
   //This is defined as 5 in winsock.h, and 0x7FFFFFFF in winsock2.h.
   //linux 128//MAXCONNECTIONS =1
 
