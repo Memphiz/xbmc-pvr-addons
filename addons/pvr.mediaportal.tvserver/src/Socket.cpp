@@ -23,6 +23,24 @@
 #include "client.h"
 #include "Socket.h"
 
+#include <sys/types.h>     /* for socket,connect */
+#include <sys/socket.h>    /* for socket,connect */
+#include <sys/un.h>        /* for Unix socket */
+#include <arpa/inet.h>     /* for inet_pton */
+#include <netdb.h>         /* for gethostbyname */
+#include <netinet/in.h>    /* for htons */
+#include <unistd.h>        /* for read, write, close */
+#include <errno.h>
+#include <fcntl.h>
+
+typedef int SOCKET;
+typedef sockaddr SOCKADDR;
+typedef sockaddr_in SOCKADDR_IN;
+#ifndef INVALID_SOCKET
+#define INVALID_SOCKET (-1)
+#endif
+#define SOCKET_ERROR (-1)
+
 using namespace std;
 using namespace ADDON;
 
