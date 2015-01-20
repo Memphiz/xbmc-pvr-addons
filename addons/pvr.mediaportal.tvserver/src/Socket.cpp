@@ -76,7 +76,7 @@ Socket::Socket()
 
 Socket::~Socket()
 {
-  close();
+  Close();
 }
 
 bool Socket::setHostname ( const std::string& host )
@@ -100,7 +100,7 @@ bool Socket::setHostname ( const std::string& host )
   return true;
 }
 
-bool Socket::close()
+bool Socket::Close()
 {
   if (is_valid())
   {
@@ -108,7 +108,7 @@ bool Socket::close()
 #ifdef TARGET_WINDOWS
       closesocket(_sd);
 #else
-      close(_sd);
+      ::close(_sd);
 #endif
     _sd = INVALID_SOCKET;
     osCleanup();
@@ -121,7 +121,7 @@ bool Socket::create()
 {
   if( is_valid() )
   {
-    close();
+    Close();
   }
 
   if(!osInit())
@@ -144,7 +144,7 @@ bool Socket::create()
 }
 
 
-bool Socket::bind ( const unsigned short port )
+bool Socket::Bind ( const unsigned short port )
 {
 
   if (!is_valid())
@@ -156,7 +156,7 @@ bool Socket::bind ( const unsigned short port )
   _sockaddr.sin_addr.s_addr = INADDR_ANY;  //listen to all
   _sockaddr.sin_port = htons( port );
 
-  int bind_return = bind(_sd, (sockaddr*)(&_sockaddr), sizeof(_sockaddr));
+  int bind_return = ::bind(_sd, (sockaddr*)(&_sockaddr), sizeof(_sockaddr));
 
   if ( bind_return == -1 )
   {
@@ -168,7 +168,7 @@ bool Socket::bind ( const unsigned short port )
 }
 
 
-bool Socket::listen_renamed() const
+bool Socket::Listen() const
 {
 
   if (!is_valid())
@@ -190,7 +190,7 @@ bool Socket::listen_renamed() const
 }
 
 
-bool Socket::accept ( Socket& new_socket ) const
+bool Socket::Accept ( Socket& new_socket ) const
 {
   if (!is_valid())
   {
@@ -198,7 +198,7 @@ bool Socket::accept ( Socket& new_socket ) const
   }
 
   socklen_t addr_length = sizeof( _sockaddr );
-  new_socket._sd = accept(_sd, const_cast<sockaddr*>( (const sockaddr*) &_sockaddr), &addr_length );
+  new_socket._sd = ::accept(_sd, const_cast<sockaddr*>( (const sockaddr*) &_sockaddr), &addr_length );
 
 #ifdef TARGET_WINDOWS
   if (new_socket._sd == INVALID_SOCKET)
@@ -214,13 +214,13 @@ bool Socket::accept ( Socket& new_socket ) const
 }
 
 
-int Socket::send ( const std::string& data )
+int Socket::Send ( const std::string& data )
 {
-  return Socket::send( (const char*) data.c_str(), (const unsigned int) data.size());
+  return Socket::Send( (const char*) data.c_str(), (const unsigned int) data.size());
 }
 
 
-int Socket::send ( const char* data, const unsigned int len )
+int Socket::Send ( const char* data, const unsigned int len )
 {
   fd_set set_w, set_e;
   struct timeval tv;
@@ -255,7 +255,7 @@ int Socket::send ( const char* data, const unsigned int len )
     return 0;
   }
 
-  int status = send(_sd, data, len, 0 );
+  int status = ::send(_sd, data, len, 0 );
 
   if (status == -1)
   {
@@ -268,14 +268,14 @@ int Socket::send ( const char* data, const unsigned int len )
 }
 
 
-int Socket::sendto ( const char* data, unsigned int size, bool sendcompletebuffer)
+int Socket::Sendto ( const char* data, unsigned int size, bool sendcompletebuffer)
 {
   int sentbytes = 0;
   int i;
 
   do
   {
-    i = sendto(_sd, data, size, 0, (const struct sockaddr*) &_sockaddr, sizeof( _sockaddr ) );
+    i = ::sendto(_sd, data, size, 0, (const struct sockaddr*) &_sockaddr, sizeof( _sockaddr ) );
 
     if (i <= 0)
     {
@@ -290,7 +290,7 @@ int Socket::sendto ( const char* data, unsigned int size, bool sendcompletebuffe
 }
 
 
-int Socket::receive ( std::string& data, unsigned int minpacketsize ) const
+int Socket::Receive ( std::string& data, unsigned int minpacketsize ) const
 {
   char * buf = NULL;
   int status = 0;
@@ -303,7 +303,7 @@ int Socket::receive ( std::string& data, unsigned int minpacketsize ) const
   buf = new char [ minpacketsize + 1 ];
   memset ( buf, 0, minpacketsize + 1 );
 
-  status = receive( buf, minpacketsize, minpacketsize );
+  status = ::receive( buf, minpacketsize, minpacketsize );
 
   data = buf;
 
@@ -380,7 +380,7 @@ bool Socket::ReadLine (string& line)
 }
 
 
-int Socket::receive ( std::string& data) const
+int Socket::Receive ( std::string& data) const
 {
   char buf[MAXRECV + 1];
   int status = 0;
@@ -391,13 +391,13 @@ int Socket::receive ( std::string& data) const
   }
 
   memset ( buf, 0, MAXRECV + 1 );
-  status = receive( buf, MAXRECV, 0 );
+  status = ::receive( buf, MAXRECV, 0 );
   data = buf;
 
   return status;
 }
 
-int Socket::receive ( char* data, const unsigned int buffersize, const unsigned int minpacketsize ) const
+int Socket::Receive ( char* data, const unsigned int buffersize, const unsigned int minpacketsize ) const
 {
   unsigned int receivedsize = 0;
 
@@ -423,15 +423,15 @@ int Socket::receive ( char* data, const unsigned int buffersize, const unsigned 
 }
 
 
-int Socket::recvfrom ( char* data, const int buffersize, struct sockaddr* from, socklen_t* fromlen) const
+int Socket::Recvfrom ( char* data, const int buffersize, struct sockaddr* from, socklen_t* fromlen) const
 {
-  int status = recvfrom(_sd, data, buffersize, 0, from, fromlen);
+  int status = ::recvfrom(_sd, data, buffersize, 0, from, fromlen);
 
   return status;
 }
 
 
-bool Socket::connect ( const std::string& host, const unsigned short port )
+bool Socket::Connect ( const std::string& host, const unsigned short port )
 {
   if ( !is_valid() )
   {
@@ -447,7 +447,7 @@ bool Socket::connect ( const std::string& host, const unsigned short port )
     return false;
   }
 
-  int status = connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
+  int status = ::connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
 
   if ( status == SOCKET_ERROR )
   {
@@ -469,7 +469,7 @@ bool Socket::reconnect()
   if( !create() )
     return false;
 
-  int status = connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
+  int status = ::connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
 
   if ( status == SOCKET_ERROR )
   {

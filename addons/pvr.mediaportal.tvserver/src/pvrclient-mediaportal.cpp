@@ -85,7 +85,7 @@ string cPVRClientMediaPortal::SendCommand(string command)
 {
   PLATFORM::CLockObject critsec(m_mutex);
 
-  if ( !m_tcpclient->send(command) )
+  if ( !m_tcpclient->Send(command) )
   {
     if ( !m_tcpclient->is_valid() )
     {
@@ -93,7 +93,7 @@ string cPVRClientMediaPortal::SendCommand(string command)
       if ( Connect() == ADDON_STATUS_OK )
       {
         // Resend the command
-        if (!m_tcpclient->send(command))
+        if (!m_tcpclient->Send(command))
         {
           XBMC->Log(LOG_ERROR, "SendCommand('%s') failed.", command.c_str());
           return "";
@@ -120,7 +120,7 @@ bool cPVRClientMediaPortal::SendCommand2(string command, vector<string>& lines)
 {
   PLATFORM::CLockObject critsec(m_mutex);
 
-  if ( !m_tcpclient->send(command) )
+  if ( !m_tcpclient->Send(command) )
   {
     if ( !m_tcpclient->is_valid() )
     {
@@ -129,7 +129,7 @@ bool cPVRClientMediaPortal::SendCommand2(string command, vector<string>& lines)
       if ( Connect() == ADDON_STATUS_OK )
       {
         // Resend the command
-        if (!m_tcpclient->send(command))
+        if (!m_tcpclient->Send(command))
         {
           XBMC->Log(LOG_ERROR, "SendCommand2('%s') failed.", command.c_str());
           return false;
@@ -175,7 +175,7 @@ ADDON_STATUS cPVRClientMediaPortal::Connect()
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
 
-  if (!m_tcpclient->connect(g_szHostname, (unsigned short) g_iPort))
+  if (!m_tcpclient->Connect(g_szHostname, (unsigned short) g_iPort))
   {
     XBMC->Log(LOG_ERROR, "Could not connect to MediaPortal TV Server backend");
     return ADDON_STATUS_LOST_CONNECTION;
@@ -273,7 +273,7 @@ void cPVRClientMediaPortal::Disconnect()
 
   m_bStop = true;
 
-  m_tcpclient->close();
+  m_tcpclient->Close();
 
   m_bConnected = false;
 }

@@ -185,17 +185,17 @@ class Socket
      * Close the socket
      * \return     True if succesful
      */
-    bool close();
+    bool Close();
 
     /*!
      * Socket bind
      */
-    bool bind ( const unsigned short port );
-    bool listen_renamed() const;
-    bool accept ( Socket& socket ) const;
+    bool Bind ( const unsigned short port );
+    bool Listen() const;
+    bool Accept ( Socket& socket ) const;
 
     // Client initialization
-    bool connect ( const std::string& host, const unsigned short port );
+    bool Connect ( const std::string& host, const unsigned short port );
 
     bool reconnect();
 
@@ -207,7 +207,7 @@ class Socket
      * \param data    Reference to a std::string with the data to transmit
      * \return    Number of bytes send or -1 in case of an error
      */
-    int send ( const std::string& data );
+    int Send ( const std::string& data );
 
     /*!
      * Socket send function
@@ -216,7 +216,7 @@ class Socket
      * \param size    Length of the data to transmit
      * \return    Number of bytes send or -1 in case of an error
      */
-    int send ( const char* data, const unsigned int size );
+    int Send ( const char* data, const unsigned int size );
 
     /*!
      * Socket sendto function
@@ -226,7 +226,7 @@ class Socket
      * \param sendcompletebuffer    If 'true': do not return until the complete buffer is transmitted
      * \return    Number of bytes send or -1 in case of an error
      */
-    int sendto ( const char* data, unsigned int size, bool sendcompletebuffer = false);
+    int Sendto ( const char* data, unsigned int size, bool sendcompletebuffer = false);
     // Data Receive
 
     /*!
@@ -236,7 +236,7 @@ class Socket
      * \param minpacketsize    The minimum number of bytes that should be received before returning from this function
      * \return    Number of bytes received or SOCKET_ERROR
      */
-    int receive ( std::string& data, unsigned int minpacketsize ) const;
+    int Receive ( std::string& data, unsigned int minpacketsize ) const;
 
     /*!
      * Socket receive function
@@ -244,7 +244,7 @@ class Socket
      * \param data    Reference to a std::string for storage of the received data.
      * \return    Number of bytes received or SOCKET_ERROR
      */
-    int receive ( std::string& data ) const;
+    int Receive ( std::string& data ) const;
 
     /*!
      * Socket receive function
@@ -254,7 +254,7 @@ class Socket
      * \param minpacketsize    Specifies the minimum number of bytes that need to be received before returning
      * \return    Number of bytes received or SOCKET_ERROR
      */
-    int receive ( char* data, const unsigned int buffersize, const unsigned int minpacketsize ) const;
+    int Receive ( char* data, const unsigned int buffersize, const unsigned int minpacketsize ) const;
 
     /*!
      * Socket recvfrom function
@@ -265,7 +265,7 @@ class Socket
      * \param fromlen    Optional, only required if 'from' is given: length of from struct
      * \return    Number of bytes received or SOCKET_ERROR
      */
-    int recvfrom ( char* data, const int buffersize, struct sockaddr* from = NULL, socklen_t* fromlen = NULL) const;
+    int Recvfrom ( char* data, const int buffersize, struct sockaddr* from = NULL, socklen_t* fromlen = NULL) const;
 
     bool set_non_blocking ( const bool );
 
