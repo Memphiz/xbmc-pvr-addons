@@ -89,7 +89,7 @@ bool Socket::close()
 #ifdef TARGET_WINDOWS
       closesocket(_sd);
 #else
-      ::close(_sd);
+      close(_sd);
 #endif
     _sd = INVALID_SOCKET;
     osCleanup();
@@ -137,7 +137,7 @@ bool Socket::bind ( const unsigned short port )
   _sockaddr.sin_addr.s_addr = INADDR_ANY;  //listen to all
   _sockaddr.sin_port = htons( port );
 
-  int bind_return = ::bind(_sd, (sockaddr*)(&_sockaddr), sizeof(_sockaddr));
+  int bind_return = bind(_sd, (sockaddr*)(&_sockaddr), sizeof(_sockaddr));
 
   if ( bind_return == -1 )
   {
@@ -157,7 +157,7 @@ bool Socket::listen() const
     return false;
   }
 
-  int listen_return = ::listen (_sd, SOMAXCONN);
+  int listen_return = listen (_sd, SOMAXCONN);
   //This is defined as 5 in winsock.h, and 0x7FFFFFFF in winsock2.h.
   //linux 128//MAXCONNECTIONS =1
 
@@ -179,7 +179,7 @@ bool Socket::accept ( Socket& new_socket ) const
   }
 
   socklen_t addr_length = sizeof( _sockaddr );
-  new_socket._sd = ::accept(_sd, const_cast<sockaddr*>( (const sockaddr*) &_sockaddr), &addr_length );
+  new_socket._sd = accept(_sd, const_cast<sockaddr*>( (const sockaddr*) &_sockaddr), &addr_length );
 
 #ifdef TARGET_WINDOWS
   if (new_socket._sd == INVALID_SOCKET)
@@ -236,7 +236,7 @@ int Socket::send ( const char* data, const unsigned int len )
     return 0;
   }
 
-  int status = ::send(_sd, data, len, 0 );
+  int status = send(_sd, data, len, 0 );
 
   if (status == -1)
   {
@@ -256,7 +256,7 @@ int Socket::sendto ( const char* data, unsigned int size, bool sendcompletebuffe
 
   do
   {
-    i = ::sendto(_sd, data, size, 0, (const struct sockaddr*) &_sockaddr, sizeof( _sockaddr ) );
+    i = sendto(_sd, data, size, 0, (const struct sockaddr*) &_sockaddr, sizeof( _sockaddr ) );
 
     if (i <= 0)
     {
@@ -389,7 +389,7 @@ int Socket::receive ( char* data, const unsigned int buffersize, const unsigned 
 
   while ( (receivedsize <= minpacketsize) && (receivedsize < buffersize) )
   {
-    int status = ::recv(_sd, data+receivedsize, (buffersize - receivedsize), 0 );
+    int status = recv(_sd, data+receivedsize, (buffersize - receivedsize), 0 );
 
     if ( status == SOCKET_ERROR )
     {
@@ -406,7 +406,7 @@ int Socket::receive ( char* data, const unsigned int buffersize, const unsigned 
 
 int Socket::recvfrom ( char* data, const int buffersize, struct sockaddr* from, socklen_t* fromlen) const
 {
-  int status = ::recvfrom(_sd, data, buffersize, 0, from, fromlen);
+  int status = recvfrom(_sd, data, buffersize, 0, from, fromlen);
 
   return status;
 }
@@ -428,7 +428,7 @@ bool Socket::connect ( const std::string& host, const unsigned short port )
     return false;
   }
 
-  int status = ::connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
+  int status = connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
 
   if ( status == SOCKET_ERROR )
   {
@@ -450,7 +450,7 @@ bool Socket::reconnect()
   if( !create() )
     return false;
 
-  int status = ::connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
+  int status = connect ( _sd, reinterpret_cast<sockaddr*>(&_sockaddr), sizeof ( _sockaddr ) );
 
   if ( status == SOCKET_ERROR )
   {
