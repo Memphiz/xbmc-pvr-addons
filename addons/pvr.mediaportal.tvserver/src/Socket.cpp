@@ -303,7 +303,7 @@ int Socket::Receive ( std::string& data, unsigned int minpacketsize ) const
   buf = new char [ minpacketsize + 1 ];
   memset ( buf, 0, minpacketsize + 1 );
 
-  status = ::receive( buf, minpacketsize, minpacketsize );
+  status = Receive( buf, minpacketsize, minpacketsize );
 
   data = buf;
 
@@ -391,7 +391,7 @@ int Socket::Receive ( std::string& data) const
   }
 
   memset ( buf, 0, MAXRECV + 1 );
-  status = ::receive( buf, MAXRECV, 0 );
+  status = Receive( buf, MAXRECV, 0 );
   data = buf;
 
   return status;
