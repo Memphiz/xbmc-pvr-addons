@@ -16,13 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "libXBMC_addon.h"
-#include "utils.h"
-#include <string>
-#include "platform/os.h"
-#include "client.h"
-#include "Socket.h"
-
+ 
 #include <sys/types.h>     /* for socket,connect */
 #include <sys/socket.h>    /* for socket,connect */
 #include <sys/un.h>        /* for Unix socket */
@@ -32,6 +26,13 @@
 #include <unistd.h>        /* for read, write, close */
 #include <errno.h>
 #include <fcntl.h>
+ 
+#include "libXBMC_addon.h"
+#include "utils.h"
+#include <string>
+#include "platform/os.h"
+#include "client.h"
+#include "Socket.h"
 
 typedef int SOCKET;
 typedef sockaddr SOCKADDR;
