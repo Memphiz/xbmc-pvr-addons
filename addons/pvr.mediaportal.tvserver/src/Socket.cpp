@@ -25,7 +25,6 @@
 
 using namespace std;
 using namespace ADDON;
-using namespace MPTV;
 
 namespace MPTV
 {
