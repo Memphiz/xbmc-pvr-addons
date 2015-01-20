@@ -20,14 +20,13 @@
 #include <vector>
 #include <stdio.h>
 
-using namespace std;
-
 #include "recordings.h"
 #include "utils.h"
 #include "timers.h"
 #include "client.h"
 #include "DateTime.h"
 
+using namespace std;
 using namespace ADDON;
 
 cRecording::cRecording()

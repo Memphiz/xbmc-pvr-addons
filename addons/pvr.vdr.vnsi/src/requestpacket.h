@@ -30,7 +30,7 @@ class cRequestPacket
     ~cRequestPacket();
 
     bool init(uint32_t opcode, bool stream = false, bool setUserDataLength = false, uint32_t userDataLength = 0);
-    bool add_String(const char* string);
+    bool add_String(const char* std::string);
     bool add_U8(uint8_t c);
     bool add_U32(uint32_t ul);
     bool add_S32(int32_t l);

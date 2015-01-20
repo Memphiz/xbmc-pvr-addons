@@ -21,13 +21,12 @@
 #include <vector>
 #include <stdio.h>
 
-using namespace std;
-
 #include "epg.h"
 #include "utils.h"
 #include "client.h"
 #include "DateTime.h"
 
+using namespace std;
 using namespace ADDON;
 
 cEpg::cEpg()

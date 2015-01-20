@@ -21,14 +21,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-using namespace std;
-
 #include "platform/os.h" //needed for snprintf
 #include "client.h"
 #include "timers.h"
 #include "utils.h"
 #include "DateTime.h"
 
+using namespace std;
 using namespace ADDON;
 using namespace MPTV;
 
