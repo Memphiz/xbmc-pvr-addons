@@ -191,7 +191,7 @@ class Socket
      * Socket bind
      */
     bool bind ( const unsigned short port );
-    bool listen() const;
+    bool listen_renamed() const;
     bool accept ( Socket& socket ) const;
 
     // Client initialization
